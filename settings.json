@@ -1,0 +1,93 @@
+{
+  "task": {
+    "show_status_indicator": false
+  },
+  "ui_font_family": "Zed Sans",
+  "features": {
+    "copilot": false
+  },
+  "buffer_font_features": {
+    "calt": false
+  },
+  "terminal": {
+    "dock": "left",
+    "blinking": "off"
+  },
+  "relative_line_numbers": true,
+  "show_copilot_suggestions": false,
+  "vim_mode": true,
+  "vim": {
+    "use_multiline_find": false
+  },
+  "theme": "Blackula",
+  "confirm_quit": true,
+  "cursor_blink": false,
+  "show_completion_documentation": false,
+  "telemetry": {
+    "metrics": false,
+    "diagnostics": false
+  },
+  "buffer_font_size": 18,
+  "tabs": {
+    "git_status": true
+  },
+  "assistant": {
+    "version": "1",
+    "enabled": false,
+    "button": false
+  },
+  "show_call_status_icon": false,
+  "project_panel": {
+    "auto_reveal_entries": false
+  },
+  "chat_panel": {
+    "button": false
+  },
+  "collaboration_panel": {
+    "button": false
+  },
+  "languages": {
+    "HTML": {
+      "tab_size": 2
+    },
+    "JavaScript": {
+      "format_on_save": "off"
+    },
+    "TSX": {
+      "format_on_save": "off"
+    },
+    "Vue.js": {
+      "tab_size": 2,
+      "format_on_save": "off"
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "inlayHints": {
+          "maxLength": null,
+          "lifetimeElisionHints": {
+            "useParameterNames": true,
+            "enable": "skip_trivial"
+          },
+          "closureReturnTypeHints": {
+            "enable": "always"
+          }
+        }
+      }
+    },
+    "gopls": {
+      "initialization_options": {
+        "hints": {
+          "assignVariableTypes": true,
+          "compositeLiteralFields": true,
+          "compositeLiteralTypes": true,
+          "constantValues": true,
+          "functionTypeParameters": true,
+          "parameterNames": true,
+          "rangeVariableTypes": true
+        }
+      }
+    }
+  }
+}
