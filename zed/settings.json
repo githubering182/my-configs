@@ -1,4 +1,13 @@
 {
+  "restore_on_startup": "none",
+  "toolbar": {
+    "quick_actions": true
+  },
+  "git": {
+    "inline_blame": {
+      "enabled": false
+    }
+  },
   "task": {
     "show_status_indicator": false
   },
@@ -19,7 +28,7 @@
   "vim": {
     "use_multiline_find": false
   },
-  "theme": "Blackula",
+  "theme": "One Dark",
   "confirm_quit": true,
   "cursor_blink": false,
   "show_completion_documentation": false,
@@ -59,6 +68,9 @@
     "Vue.js": {
       "tab_size": 2,
       "format_on_save": "off"
+    },
+    "Zig": {
+      "enable_language_server": true
     }
   },
   "lsp": {

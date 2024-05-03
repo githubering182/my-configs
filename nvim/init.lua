@@ -7,43 +7,31 @@ vim.opt.shiftwidth = 2
 
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 1
-vim.g.netrw_keepdir = 0
 vim.g.netrw_bufsettings = ""
 
--- Set <space> as the leader key
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
 
--- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
 
--- Sync clipboard between OS and Neovim.
 vim.opt.clipboard = 'unnamedplus'
 
--- Case-insensitive searching UNLESS \C or one or more capital letters in the search term
 vim.opt.ignorecase = true
 vim.opt.smartcase = true
 
--- Decrease update time
 vim.opt.updatetime = 250
 
--- Decrease mapped sequence wait time
--- Displays which-key popup sooner
 vim.opt.timeoutlen = 300
 
--- [[ Basic Keymaps ]]
--- Set highlight on search, but clear on pressing <Esc> in normal mode
 vim.opt.hlsearch = true
 vim.keymap.set('n', '<Esc>', '<cmd>nohlsearch<CR>')
 
--- Diagnostic keymaps
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { desc = 'Go to previous [D]iagnostic message' })
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { desc = 'Go to next [D]iagnostic message' })
 vim.keymap.set('n', '<leader>e', vim.diagnostic.open_float, { desc = 'Show diagnostic [E]rror messages' })
 vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 
--- Highlight when yanking (copying) text
 vim.api.nvim_create_autocmd('TextYankPost', {
     desc = 'Highlight when yanking (copying) text',
     group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
@@ -52,7 +40,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     end,
 })
 
--- [[ Install `lazy.nvim` plugin manager ]]
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
 if not vim.loop.fs_stat(lazypath) then
     local lazyrepo = 'https://github.com/folke/lazy.nvim.git'
@@ -62,6 +49,36 @@ vim.opt.rtp:prepend(lazypath)
 
 require('lazy').setup({
     'tpope/vim-surround',
+		{
+			"lewis6991/gitsigns.nvim",
+			lazy = false,
+			config = function()
+				require("gitsigns").setup({
+					signs = {
+						add          = { text = '┃' },
+						change       = { text = '┃' },
+						delete       = { text = '_' },
+						topdelete    = { text = '‾' },
+						changedelete = { text = '~' },
+						untracked    = { text = '┆' },
+					},
+					current_line_blame = false,
+					sign_priority = 1,
+					preview_config = { border = "rounded", row = 1, col = 0 },
+					on_attach = function(bufnr)
+						vim.api.nvim_buf_set_keymap(bufnr, "n", "<leader>gb", "", {
+							callback = function() require("gitsigns").blame_line({ full = true }) end,
+							desc = "Git: [p]review the current line [b]lame",
+						})
+
+						vim.api.nvim_buf_set_keymap(bufnr, "n", "<localleader>gd", "", {
+							callback = function() require("gitsigns").diffthis("~") end,
+							desc = "Git: split [g]it [d]iffs",
+						})
+					end,
+				})
+			end,
+		},
     {
         'nvim-telescope/telescope.nvim',
         event = 'VimEnter',
@@ -109,12 +126,10 @@ require('lazy').setup({
         'neovim/nvim-lspconfig',
         dependencies = {
             { 'williamboman/mason.nvim', config = true },
+            { 'j-hui/fidget.nvim',       opts = {} },
+            { 'folke/neodev.nvim',       opts = {} },
             'williamboman/mason-lspconfig.nvim',
             'WhoIsSethDaniel/mason-tool-installer.nvim',
-
-            { 'j-hui/fidget.nvim',       opts = {} },
-
-            { 'folke/neodev.nvim',       opts = {} },
         },
         config = function()
             vim.api.nvim_create_autocmd('LspAttach', {
@@ -166,9 +181,6 @@ require('lazy').setup({
             require('mason').setup()
 
             local ensure_installed = vim.tbl_keys(servers or {})
-            vim.list_extend(ensure_installed, {
-                'stylua', -- Used to format Lua code
-            })
             require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
             require('mason-lspconfig').setup {
